@@ -2,6 +2,8 @@
 
 QRAtt, canlı ders sekmesini arka planda izleyen bir Chrome eklentisidir. Ekranda yoklama QR kodu belirdiğinde kodu okur, yoklama sayfasını açar, öğrenci numaranı yazar ve **DERSE KATIL**'a basar. Sonucu sana bildirim olarak gösterir.
 
+![QRAtt popup'ı ve yoklama sayfası](docs/screenshot.png)
+
 ## Özellikler
 
 - Seçtiğin sekmeyi, sekme arka plandayken bile 2 saniyede bir tarar.
