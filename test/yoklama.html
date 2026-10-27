@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yoklama Kontrol Sistemi (Test)</title>
+<style>
+  body { font: 15px system-ui, sans-serif; margin: 0; background: #eef2f6; color: #1d2b3a; }
+  .card { max-width: 420px; margin: 40px auto; background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px #0002; }
+  h1 { font-size: 18px; margin: 0 0 4px; }
+  .sub { color: #5a6b7c; font-size: 13px; margin: 0 0 18px; }
+  .row { margin-bottom: 14px; }
+  label { display: block; font-weight: 600; margin-bottom: 4px; }
+  input, select { width: 100%; box-sizing: border-box; padding: 8px; border: 1px solid #a9b8c7; border-radius: 4px; font: inherit; }
+  input[readonly] { background: #f3f6f9; }
+  button { width: 100%; padding: 10px; border: 0; border-radius: 4px; background: #3f9b2e; color: #fff; font-weight: 700; font-size: 15px; cursor: pointer; }
+  .alert { margin-top: 14px; padding: 10px; border-radius: 4px; display: none; }
+  .alert.ok { display: block; background: #dcefdc; color: #1f5a22; }
+  .alert.err { display: block; background: #f6dcd8; color: #7a2418; }
+  .note { margin-top: 18px; font-size: 12px; color: #5a6b7c; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Yoklama Kontrol Sistemi</h1>
+  <p class="sub">Yerel test sayfası — gerçek sisteme hiçbir şey gönderilmez.</p>
+
+  <div class="row">
+    <label for="ogrNo">Öğrenci Numarası</label>
+    <input id="ogrNo" inputmode="numeric" autocomplete="off">
+  </div>
+  <div class="row">
+    <label for="adSoyad">Ad Soyad</label>
+    <input id="adSoyad" readonly>
+  </div>
+  <div class="row">
+    <label for="kod">Ders Aktivasyon Kodu</label>
+    <input id="kod" autocomplete="off">
+  </div>
+  <div class="row">
+    <label for="ders">Ders</label>
+    <select id="ders" disabled><option value="">Seçiniz</option></select>
+  </div>
+  <button id="katil" type="button">DERSE KATIL</button>
+  <div id="sonuc" class="alert"></div>
+
+  <p class="note">Parametreler: <code>?kod=ABC123</code> kodu linkten verir (sayfa kutuyu doldurmaz, eklenti yazar) ·
+    <code>&amp;secenek=tek</code> listede tek ders · <code>&amp;secenek=iki</code> (varsayılan) Yazılım + Elektrik</p>
+</div>
+<script>
+  const q = new URLSearchParams(location.search);
+  const $ = id => document.getElementById(id);
+  const ders = $("ders");
+  const options = q.get("secenek") === "tek"
+    ? ["Fizik I"]
+    : ["Fizik I - Yazılım Mühendisliği", "Fizik I - Elektrik-Elektronik Mühendisliği"];
+
+  $("ogrNo").addEventListener("input", () => {
+    const n = $("ogrNo").value.replace(/\D/g, "");
+    setTimeout(() => { $("adSoyad").value = n.length >= 6 ? "TEST ÖĞRENCİ" : ""; }, 500);
+  });
+
+  $("kod").addEventListener("input", () => {
+    if (!$("kod").value.trim() || ders.options.length > 1) return;
+    setTimeout(() => {
+      options.forEach((t, i) => ders.add(new Option(t, "D" + (i + 1))));
+      ders.disabled = false;
+    }, 700);
+  });
+
+  $("katil").addEventListener("click", () => {
+    const box = $("sonuc");
+    const err = m => { box.className = "alert err"; box.textContent = "Hata: " + m; };
+    if (!$("adSoyad").value) return err("Öğrenci numarası geçersiz.");
+    if (!$("kod").value.trim()) return err("Aktivasyon kodu boş.");
+    if (!ders.value) return err("Ders seçilmedi.");
+    box.className = "alert ok";
+    box.textContent = `Yoklamaya katıldınız: ${$("ogrNo").value} · ${ders.selectedOptions[0].text} · kod ${$("kod").value}`;
+    try {
+      const list = JSON.parse(localStorage.getItem("katilanlar") || "[]");
+      list.push({ no: $("ogrNo").value, ders: ders.selectedOptions[0].text, kod: $("kod").value, saat: new Date().toLocaleTimeString("tr") });
+      localStorage.setItem("katilanlar", JSON.stringify(list));
+    } catch {}
+  });
+</script>
+</body>
+</html>

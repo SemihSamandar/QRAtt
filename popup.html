@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<style>
+  body { font: 14px system-ui, sans-serif; width: 290px; margin: 0; padding: 14px; color: #1d2b3a; background: #f3f6f9; }
+  h1 { font-size: 15px; margin: 0 0 12px; }
+  label { display: block; margin-bottom: 10px; }
+  input[type=text] { width: 100%; box-sizing: border-box; padding: 7px 8px; border: 1px solid #a9b8c7; border-radius: 4px; font: inherit; margin-top: 4px; }
+  .hint { color: #5a6b7c; font-size: 12px; }
+  button { width: 100%; padding: 9px; border: 0; border-radius: 4px; background: #3f9b2e; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
+  button.stop { background: #a33a2b; }
+  button:focus-visible, input:focus-visible { outline: 2px solid #2f6fe0; outline-offset: 1px; }
+  #status { margin: 10px 0 0; padding: 8px; border-radius: 4px; background: #e2e8ee; font-size: 13px; }
+  #status.on { background: #dcefdc; color: #1f5a22; }
+</style>
+</head>
+<body>
+  <h1>QRAtt</h1>
+  <label>Öğrenci numaran
+    <input type="text" id="no" inputmode="numeric" autocomplete="off">
+  </label>
+  <label>Bölümün <span class="hint">(ders listesinde birden fazla seçenek çıkarsa)</span>
+    <input type="text" id="department" placeholder="Yazılım" autocomplete="off">
+  </label>
+  <label>Yoklama sayfası adresi <span class="hint">(sadece QR'da link yerine kod varsa)</span>
+    <input type="text" id="pageUrl" placeholder="https://...">
+  </label>
+  <label><input type="checkbox" id="submit"> DERSE KATIL'a otomatik bas</label>
+  <button id="toggle">Bu sekmeyi izle</button>
+  <p id="status"></p>
+  <script src="popup.js"></script>
+</body>
+</html>

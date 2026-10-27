@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Canlı Ders (Test)</title>
+<style>
+  body { font: 15px system-ui, sans-serif; margin: 0; background: #1d2b3a; color: #eef2f6; text-align: center; }
+  .wrap { max-width: 640px; margin: 30px auto; padding: 0 16px; }
+  .screen { background: #fff; color: #1d2b3a; border-radius: 8px; min-height: 360px; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 20px; }
+  #qr { margin: 10px auto; }
+  .controls { margin: 16px 0; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  button { padding: 9px 14px; border: 0; border-radius: 4px; background: #3f9b2e; color: #fff; font-weight: 600; cursor: pointer; }
+  button.alt { background: #4a5d70; }
+  code { font-size: 13px; word-break: break-all; }
+  .log { margin-top: 20px; text-align: left; background: #26384a; border-radius: 8px; padding: 12px 16px; }
+  .log h3 { margin: 0 0 8px; font-size: 15px; display: flex; justify-content: space-between; align-items: center; }
+  .log button { padding: 4px 10px; font-size: 12px; }
+  .log ul { margin: 0; padding-left: 18px; }
+  .log li { margin: 4px 0; color: #9be08c; }
+  .log li.bos { color: #a9b8c7; list-style: none; margin-left: -18px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h2>Fizik I — Canlı Ders (test)</h2>
+  <div class="controls">
+    <button id="iki">QR göster (Yazılım + Elektrik)</button>
+    <button id="tek" class="alt">QR göster (tek ders)</button>
+    <button id="gizle" class="alt">QR gizle</button>
+  </div>
+  <div class="screen">
+    <p id="bilgi">Bu sekmeyi eklentiyle izlemeye al, sonra QR göster'e bas.</p>
+    <div id="qr"></div>
+    <code id="link"></code>
+  </div>
+  <div class="log">
+    <h3>Yoklamaya katılanlar <button id="temizle" class="alt">Temizle</button></h3>
+    <ul id="katilanlar"><li class="bos">Henüz kimse katılmadı.</li></ul>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  const $ = id => document.getElementById(id);
+  function show(secenek) {
+    const kod = Math.random().toString(36).slice(2, 8).toUpperCase();
+    const url = new URL(`yoklama.html?kod=${kod}&secenek=${secenek}`, location.href).href;
+    $("qr").innerHTML = "";
+    new QRCode($("qr"), { text: url, width: 280, height: 280 });
+    $("link").textContent = url;
+    $("bilgi").textContent = "Yoklama QR kodu:";
+  }
+  $("iki").onclick = () => show("iki");
+  $("tek").onclick = () => show("tek");
+  function renderLog() {
+    let list = [];
+    try { list = JSON.parse(localStorage.getItem("katilanlar") || "[]"); } catch {}
+    $("katilanlar").innerHTML = list.length
+      ? list.map(k => `<li>✔ ${k.saat} · ${k.no} · ${k.ders} · kod ${k.kod}</li>`).reverse().join("")
+      : '<li class="bos">Henüz kimse katılmadı.</li>';
+  }
+  window.addEventListener("storage", e => e.key === "katilanlar" && renderLog());
+  $("temizle").onclick = () => { try { localStorage.removeItem("katilanlar"); } catch {} renderLog(); };
+  renderLog();
+  $("gizle").onclick = () => { $("qr").innerHTML = ""; $("link").textContent = ""; $("bilgi").textContent = "QR gizlendi."; };
+</script>
+</body>
+</html>
