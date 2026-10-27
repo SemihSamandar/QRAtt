@@ -4,30 +4,30 @@
 
 # QRAtt
 
-Ders sekmesinde yoklama QR kodu çıkınca numaranla otomatik katılan Chrome eklentisi.
+A Chrome extension that watches your lecture tab and joins attendance with your student number as soon as a QR code appears.
 
-<img src="docs/screenshot.png" width="720" alt="QRAtt popup'ı ve yoklama sayfası">
+<img src="docs/screenshot.png" width="720" alt="QRAtt popup and the attendance page">
 
 </div>
 
-## Kurulum
+## Installation
 
-1. Repoyu indir: `git clone https://github.com/SemihSamandar/QRAtt.git`
-2. `chrome://extensions` → **Geliştirici modu**'nu aç
-3. **Paketlenmemiş öğe yükle** → `QRAtt` klasörünü seç
+1. Clone the repo: `git clone https://github.com/SemihSamandar/QRAtt.git`
+2. Open `chrome://extensions` → turn on **Developer mode**
+3. Click **Load unpacked** → select the `QRAtt` folder
 
-## Kullanım
+## Usage
 
-1. Eklentiye öğrenci numaranı yaz.
-2. Ders sekmesindeyken **Bu sekmeyi izle**'ye bas (ya da `Alt+Shift+Q`).
-3. Sekmeyi arka plana alabilirsin, kapatma. QR çıkınca form doldurulur ve sonuç bildirim olarak gelir.
+1. Enter your student number in the extension popup.
+2. On the lecture tab, click **Bu sekmeyi izle** ("Watch this tab"), or press `Alt+Shift+Q`.
+3. You can move the tab to the background, just don't close it. When a QR code appears, the form is filled in and you get a notification with the result.
 
-> Ders listesinde birden fazla seçenek varsa **Bölümün** alanını, QR'da link yerine sadece kod varsa **Yoklama sayfası adresi**'ni doldur.
+> If the course list has more than one option, fill in **Bölümün** (your department). If the QR code contains only a code instead of a link, fill in **Yoklama sayfası adresi** (attendance page URL).
 
-## Gizlilik
+## Privacy
 
-Ayarlar yalnızca tarayıcında saklanır. Sekme görüntüsü bellekte taranır, kaydedilmez ve hiçbir sunucuya gönderilmez.
+Settings are stored only in your browser. The tab's video is scanned in memory, never saved, and never sent to any server.
 
 ---
 
-<sub>QR okuma: [jsQR](https://github.com/cozmo/jsQR) · Kullanmadan önce okulunun yoklama kurallarını kontrol et.</sub>
+<sub>QR decoding: [jsQR](https://github.com/cozmo/jsQR) · Check your school's attendance rules before using it.</sub>
